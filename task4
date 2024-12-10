@@ -1,0 +1,96 @@
+class Library:
+    def __init__(self):
+        self.books = {}  # Dictionary to hold books: key = book title, value = quantity
+        self.issued_books = {}  # Dictionary to track issued books: key = book title, value = quantity issued
+
+    def add_book(self, title, quantity):
+        """Add books to the library."""
+        if title in self.books:
+            self.books[title] += quantity
+        else:
+            self.books[title] = quantity
+        print(f"'{title}' has been added to the library with {quantity} copies.")
+
+    def issue_book(self, title):
+        """Issue a book to a user."""
+        if title not in self.books or self.books[title] == 0:
+            print(f"Sorry, '{title}' is not available.")
+        else:
+            self.books[title] -= 1
+            if title in self.issued_books:
+                self.issued_books[title] += 1
+            else:
+                self.issued_books[title] = 1
+            print(f"'{title}' has been issued. Please return it soon.")
+
+    def return_book(self, title):
+        """Return a book to the library."""
+        if title in self.issued_books and self.issued_books[title] > 0:
+            self.issued_books[title] -= 1
+            self.books[title] += 1
+            print(f"'{title}' has been returned. Thank you!")
+        else:
+            print(f"'{title}' was not issued or already returned.")
+
+    def view_books(self):
+        """View all available books in the library."""
+        if not self.books:
+            print("No books available in the library.")
+        else:
+            print("\nAvailable Books:")
+            for title, quantity in self.books.items():
+                print(f"{title}: {quantity} copies")
+        print()
+
+    def view_issued_books(self):
+        """View books that have been issued."""
+        if not self.issued_books:
+            print("No books have been issued yet.")
+        else:
+            print("\nIssued Books:")
+            for title, quantity in self.issued_books.items():
+                print(f"{title}: {quantity} copies")
+        print()
+
+def main():
+    library = Library()
+    
+    while True:
+        print("Library Management System")
+        print("1. Add Book")
+        print("2. Issue Book")
+        print("3. Return Book")
+        print("4. View Available Books")
+        print("5. View Issued Books")
+        print("6. Exit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            title = input("Enter book title: ")
+            quantity = int(input("Enter number of copies: "))
+            library.add_book(title, quantity)
+        
+        elif choice == '2':
+            title = input("Enter book title to issue: ")
+            library.issue_book(title)
+        
+        elif choice == '3':
+            title = input("Enter book title to return: ")
+            library.return_book(title)
+        
+        elif choice == '4':
+            library.view_books()
+        
+        elif choice == '5':
+            library.view_issued_books()
+        
+        elif choice == '6':
+            print("Exiting Library Management System. Goodbye!")
+            break
+        
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
